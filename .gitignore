@@ -1,0 +1,12 @@
+## IDE
+.vscode/
+
+## Build generated
+bin/
+obj/
+
+## Settings file
+appsettings.prod.json
+
+## MacOS refuse
+.DS_Store
