@@ -1,7 +1,10 @@
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using NestStream.Client;
+using NestStream.Type;
 
 namespace NestStream
 {
@@ -24,17 +27,18 @@ namespace NestStream
                 string logTime = e.Timestamp.ToShortTimeString();
                 switch (e.Type)
                 {
+                    case "keep-alive":
+                        break;
                     case "put":
-                        foreach (var t in ThermostatData.Parse(e.Data)) { Console.WriteLine($"{logTime} [{e.Type}] {t.ToString()}"); }
+                        Console.Write(new StreamEvent(e.Data));
                         break;
                     default:
-                        //Console.WriteLine($"{logTime} [{e.Type}] {e.Data.TrimEnd()}");
+                        Console.WriteLine($"{logTime} [{e.Type}] {e.Data.TrimEnd()}");
                         break;
                 }
             };
-            client.Connect();
 
-            Console.ReadKey();
+            client.Connect().Wait();
         }
     }
 }
